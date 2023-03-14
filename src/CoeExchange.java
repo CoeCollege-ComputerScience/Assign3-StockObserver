@@ -37,11 +37,6 @@ public class CoeExchange extends JPanel {
         i2.setBroker(b);
         i3.setBroker(b);
 
-        sp.addObserver(i);
-        sp.addObserver(i2);
-        sp.addObserver(i3);
-        sp.addObserver(b);
-
         add(sp);
         add(ip);
         add(ip2);

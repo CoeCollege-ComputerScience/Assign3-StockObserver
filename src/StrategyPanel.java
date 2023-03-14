@@ -28,27 +28,9 @@ public class StrategyPanel extends JPanel{
         bg.add(traderRB);
         bg.add(brokerRB);
         growthRB.setSelected(true);
-        investor.setIs(new GrowthStrategy());
+
         strategyBtn = new JButton("Set Strategy");
         strategyBtn.setAlignmentX(LEFT_ALIGNMENT);
-        strategyBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Broker b = investor.getBroker();
-                b.removeListener(investor);
-
-                if (growthRB.isSelected()){
-                    investor.setIs(new GrowthStrategy());
-                }
-                if(traderRB.isSelected()){
-                    investor.setIs(new TraderStrategy(investor.getSharesOwned(),investor.getInvestedAmt()));
-                }
-                if(brokerRB.isSelected()){
-                    b.addListener(investor);
-                    investor.setIs(new BrokerStrategy());
-                }
-            }
-        });
 
         buttonPanel.add(growthRB);
         buttonPanel.add(traderRB);

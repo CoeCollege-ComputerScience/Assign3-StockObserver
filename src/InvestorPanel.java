@@ -1,88 +1,54 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class InvestorPanel extends JPanel implements InvestorObserver{
+public class InvestorPanel extends JPanel{
 
-    private Investor i;
+    private Investor investor;
     private JLabel nameLbl;
     private JLabel shareLbl;
     private JLabel investmentLbl;
+    private JLabel profitLbl;
     private JRadioButton growthRB;
     private JRadioButton traderRB;
     private JRadioButton brokerRB;
     private JButton strategyBtn;
+    private StrategyPanel strategyPanel;
 
 
 
     public InvestorPanel(Investor i) {
         super();
-        setPreferredSize(new Dimension(400,150));
+        setPreferredSize(new Dimension(400,125));
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-        nameLbl = new JLabel();
-        shareLbl = new JLabel();
-        investmentLbl = new JLabel();
-        growthRB = new JRadioButton("Growth");
-        traderRB = new JRadioButton("Trader");
-        brokerRB = new JRadioButton("Broker");
-        ButtonGroup bg = new ButtonGroup();
-        bg.add(growthRB);
-        bg.add(traderRB);
-        bg.add(brokerRB);
-        growthRB.setSelected(true);
-        strategyBtn = new JButton("Set Strategy");
-        i.setIs(new GrowthStrategy());
-
-        strategyBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Broker b = i.getBroker();
-                b.removeListener(i);
-
-                if (growthRB.isSelected()){
-                    i.setIs(new GrowthStrategy());
-                }
-                if(traderRB.isSelected()){
-                    i.setIs(new TraderStrategy(i.getSharesOwned(),i.getInvestedAmt()));
-                }
-                if(brokerRB.isSelected()){
-                    b.addListener(i);
-                    i.setIs(new BrokerStrategy());
-                }
-            }
-        });
+        nameLbl = new JLabel("Name:");
+        shareLbl = new JLabel("Shares:");
+        investmentLbl = new JLabel("Invested:");
+        profitLbl = new JLabel("Profit:");
+        nameLbl.setAlignmentX(LEFT_ALIGNMENT);
+        shareLbl.setAlignmentX(LEFT_ALIGNMENT);
+        investmentLbl.setAlignmentX(LEFT_ALIGNMENT);
+        profitLbl.setAlignmentX(LEFT_ALIGNMENT);
         setInvestor(i);
 
+
+        strategyPanel = new StrategyPanel(i);
+        strategyPanel.setAlignmentX(LEFT_ALIGNMENT);
         add(nameLbl);
         add(shareLbl);
         add(investmentLbl);
-        add(growthRB);
-        add(traderRB);
-        add(brokerRB);
-        add(strategyBtn);
-
+        add(profitLbl);
+        add(strategyPanel);
     }
 
     public void setInvestor(Investor i) {
-        if (this.i!= null){
-            this.i.removeListener(this);
-        }
-        this.i = i;
+        this.investor = i;
         nameLbl.setText("Name: "+ i.getName());
-        i.addListener(this);
     }
 
     public Investor getInvestor() {
-        return i;
+        return investor;
     }
 
-    @Override
-    public void update() {
-        String shares = Integer.toString(i.getSharesOwned());
-        String investedAmt = String.format("%.2f",i.getInvestedAmt());
-        shareLbl.setText("Shares: "+shares);
-        investmentLbl.setText("Invested: "+ investedAmt);
-    }
+
 }
 
